@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Login</title>
+  <link rel="stylesheet" href="login.css">
+  <script src="login.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <h2>Student Login</h2>
+    <form id="loginForm" onsubmit="event.preventDefault(); validateLogin();"> 
+      <label for="name">Student Name:</label>
+      <input type="text" id="name" required placeholder="Enter your name">
+
+      <label for="studentId">Student ID:</label>
+      <input type="text" id="studentId" required placeholder="Enter your ID">
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" required placeholder="Enter your RGUKT SKLM email">
+
+      <button type="submit">Login</button>
+      <p id="errorMessage" class="error-message"></p>
+    </form>
+  </div>
+</body>
+</html>

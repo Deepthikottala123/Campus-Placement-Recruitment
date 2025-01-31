@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Branch Selection</title>
+    <link rel="stylesheet" href="branch.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Select Your Branch</h2>
+        <p id="welcomeMessage"></p>
+        <form id="branchForm" onsubmit="return selectBranch()">
+            <label for="branch">Choose your branch:</label>
+            <select id="branch" required>
+                <option value="" disabled selected>Select your branch</option>
+                <option value="ECE">Electronics and Communication Engineering</option>
+                <option value="CSE">Computer Science Engineering</option>
+                <option value="EE">Electrical Engineering</option>
+                <option value="CE">Civil Engineering</option>
+                <option value="CHE">Chemical Engineering</option>
+                <option value="IT">Information Technology</option>
+            </select>
+            <button type="submit">View Jobs</button>
+        </form>
+    </div>
+
+    <script>
+        function selectBranch() {
+            const branch = document.getElementById('branch').value;
+            if (branch) {
+                window.location.href = 'job.html?branch=' + branch;
+            }
+            return false; 
+        }
+    </script>
+</body>
+</html>

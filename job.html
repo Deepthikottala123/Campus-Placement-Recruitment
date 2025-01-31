@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Listings</title>
+    <link rel="stylesheet" href="job.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Job Listings for <span id="branch-name">Branch Name</span></h1>
+        <div id="job-list"></div>
+        <div id="emailConfirmation" style="display: none; color: green;"></div>
+    </div>
+
+    <script>
+        const jobListings = {
+            CSE: [
+                { title: "Software Engineer at Google", url: "https://www.google.com/careers", description: "Develop scalable software solutions.", deadline: "2024-11-20", remainingSlots: 4 },
+                { title: "Backend Developer at Microsoft", url: "https://www.microsoft.com/careers", description: "Build high-performance applications.", deadline: "2024-11-25", remainingSlots: 3 },
+                { title: "Frontend Developer at Facebook", url: "https://www.facebook.com/careers", description: "Create engaging user interfaces.", deadline: "2024-12-01", remainingSlots: 5 },
+                {title: "Full Stack Developer at Amazon", url: "https://www.amazon.com/jobs", description: "Design and implement full-stack solutions.", deadline: "2024-12-05", remainingSlots: 5 },
+                { title: "Data Scientist at Netflix", url: "https://www.netflix.com/jobs", description: "Analyze data and provide actionable insights.", deadline: "2024-11-30", remainingSlots: 3 },
+                { title: "Mobile App Developer at Apple", url: "https://www.apple.com/careers", description: "Develop mobile applications for iOS devices.", deadline: "2024-12-15", remainingSlots: 4 },
+                { title: "Cloud Engineer at IBM", url: "https://www.ibm.com/jobs", description: "Manage and optimize cloud infrastructure.", deadline: "2024-11-18", remainingSlots: 3 },
+                { title: "DevOps Engineer at Adobe", url: "https://www.adobe.com/careers", description: "Implement and maintain DevOps practices.", deadline: "2024-12-10", remainingSlots: 2 },
+                { title: "AI Researcher at OpenAI", url: "https://openai.com/careers", description: "Conduct research in artificial intelligence.", deadline: "2024-11-30", remainingSlots: 2 },
+                { title: "Security Analyst at Cisco", url: "https://www.cisco.com/careers", description: "Analyze and improve cybersecurity measures.", deadline: "2024-12-01", remainingSlots: 3 },
+                { title: "Blockchain Developer at Ripple", url: "https://ripple.com/careers", description: "Develop and maintain blockchain-based solutions.", deadline: "2024-12-05", remainingSlots: 2 },
+                { title: "Game Developer at Epic Games", url: "https://www.epicgames.com/careers", description: "Design and develop engaging video games.", deadline: "2024-11-25", remainingSlots: 4 },
+                { title: "Systems Administrator at Oracle", url: "https://www.oracle.com/corporate/careers", description: "Manage and maintain IT infrastructure.", deadline: "2024-12-10", remainingSlots: 3 },
+                { title: "Software Engineer at Uber", url: "https://www.uber.com/careers", description: "Build software solutions for transportation.", deadline: "2024-12-01", remainingSlots: 2 },
+                { title: "Frontend Developer at Shopify", url: "https://www.shopify.com/careers", description: "Build user interfaces for e-commerce platforms.", deadline: "2024-11-29", remainingSlots: 3 },
+                { title: "Backend Developer at LinkedIn", url: "https://www.linkedin.com/careers", description: "Develop scalable backend systems.", deadline: "2024-11-30", remainingSlots: 1 },
+                { title: "Data Engineer at Spotify", url: "https://www.spotify.com/careers", description: "Build systems to process and analyze large datasets.", deadline: "2024-12-10", remainingSlots: 4 },
+                { title: "Software Tester at SAP", url: "https://www.sap.com/careers", description: "Test software applications to ensure quality.", deadline: "2024-11-22", remainingSlots: 3 },
+                { title: "Cloud Architect at Salesforce", url: "https://www.salesforce.com/careers", description: "Design and build scalable cloud infrastructure.", deadline: "2024-12-05", remainingSlots: 2 },
+                { title: "Database Administrator at Oracle", url: "https://www.oracle.com/corporate/careers", description: "Manage and optimize database systems.", deadline: "2024-11-28", remainingSlots: 1 }
+
+            ],
+            ECE: [
+                { title: "Embedded Systems Engineer at Texas Instruments", url: "https://www.ti.com/careers", description: "Design embedded systems.", deadline: "2024-11-22", remainingSlots: 2 },
+                { title: "Signal Processing Engineer at Intel", url: "https://www.intel.com/careers", description: "Work on signal processing algorithms.", deadline: "2024-12-10", remainingSlots: 5 },
+                { title: "RF Engineer at Qualcomm", url: "https://www.qualcomm.com/careers", description: "Design and optimize RF systems.", deadline: "2024-12-15", remainingSlots: 3 },
+                { title: "RF Engineer at Nokia", url: "https://www.nokia.com/careers", description: "Design and optimize radio frequency systems for telecommunications.", deadline: "2024-11-20", remainingSlots: 2 },
+                { title: "Firmware Developer at Broadcom", url: "https://www.broadcom.com/careers", description: "Develop firmware for embedded devices.", deadline: "2024-12-05", remainingSlots: 3 },
+                { title: "VLSI Engineer at AMD", url: "https://www.amd.com/careers", description: "Design and test very-large-scale integration (VLSI) circuits.", deadline: "2024-11-30", remainingSlots: 2 },
+                { title: "Network Engineer at Cisco", url: "https://www.cisco.com/careers", description: "Design and implement computer networks.", deadline: "2024-12-01", remainingSlots: 3 },
+                { title: "Embedded Software Engineer at Honeywell", url: "https://www.honeywell.com/careers", description: "Develop software for embedded systems.", deadline: "2024-11-18", remainingSlots: 4 },
+                { title: "Electronics Design Engineer at Siemens", url: "https://www.siemens.com/careers", description: "Design and prototype electronic systems.", deadline: "2024-12-15", remainingSlots: 5 },
+                { title: "Communication Engineer at Ericsson", url: "https://www.ericsson.com/careers", description: "Develop solutions for modern telecommunication systems.", deadline: "2024-11-25", remainingSlots: 3 },
+                { title: "IC Design Engineer at Texas Instruments", url: "https://www.ti.com/careers", description: "Design integrated circuits for communication systems.", deadline: "2024-12-10", remainingSlots: 2 },
+                { title: "DSP Engineer at Analog Devices", url: "https://www.analog.com/careers", description: "Work on digital signal processing algorithms and applications.", deadline: "2024-11-28", remainingSlots: 1 },
+                { title: "Test Engineer at Micron Technology", url: "https://www.micron.com/careers", description: "Test and validate electronic components and systems.", deadline: "2024-12-02", remainingSlots: 3 },
+                { title: "ASIC Design Engineer at Qualcomm", url: "https://www.qualcomm.com/careers", description: "Design application-specific integrated circuits for communication systems.", deadline: "2024-11-22", remainingSlots: 4 },
+                { title: "Digital Electronics Engineer at NXP Semiconductors", url: "https://www.nxp.com/careers", description: "Design digital circuits for consumer electronics.", deadline: "2024-12-08", remainingSlots: 2 },
+                { title: "Power Electronics Engineer at GE Energy", url: "https://www.ge.com/careers", description: "Work on power systems for energy generation.", deadline: "2024-11-25", remainingSlots: 3 },
+                { title: "Robotics Engineer at ABB", url: "https://new.abb.com/careers", description: "Develop and maintain robotic systems for industrial applications.", deadline: "2024-12-05", remainingSlots: 4 },
+                { title: "Control Systems Engineer at Honeywell", url: "https://www.honeywell.com/careers", description: "Design control systems for automation and manufacturing.", deadline: "2024-11-29", remainingSlots: 3 },
+                { title: "Aerospace Electronics Engineer at Boeing", url: "https://www.boeing.com/careers", description: "Design avionics systems for aerospace applications.", deadline: "2024-12-10", remainingSlots: 2 },
+                { title: "Autonomous Systems Engineer at Tesla", url: "https://www.tesla.com/careers", description: "Work on autonomous driving systems.", deadline: "2024-11-20", remainingSlots: 3 },
+                { title: "IoT Solutions Engineer at Cisco", url: "https://www.cisco.com/careers", description: "Develop solutions for the Internet of Things (IoT).", deadline: "2024-12-01", remainingSlots: 4 },
+                { title: "Application Engineer at Infineon Technologies", url: "https://www.infineon.com/careers", description: "Work with customers to implement communication solutions.", deadline: "2024-11-30", remainingSlots: 2 },
+                { title: "Electromechanical Engineer at Schneider Electric", url: "https://www.se.com/careers", description: "Design electromechanical systems for energy management.", deadline: "2024-12-05", remainingSlots: 3 },
+                { title: "System Engineer at Samsung Electronics", url: "https://www.samsung.com/careers", description: "Design and integrate systems for consumer electronics.", deadline: "2024-12-12", remainingSlots: 4 }
+
+        ],
+    EE: [
+        { 
+            title: "System Engineer at Samsung Electronics", 
+            url: "https://www.samsung.com/careers", 
+            description: "Design and integrate systems for consumer electronics.", 
+            deadline: "2024-12-12", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Electrical Engineer at Siemens", 
+            url: "https://www.siemens.com/careers", 
+            description: "Design electrical systems and components.", 
+            deadline: "2024-11-25", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "Power Systems Engineer at GE", 
+            url: "https://www.ge.com/careers", 
+            description: "Work on the design and optimization of power systems.", 
+            deadline: "2024-12-10", 
+            remainingSlots: 6 
+        },
+        { 
+            title: "Control Systems Engineer at Schneider Electric", 
+            url: "https://www.se.com/careers", 
+            description: "Develop control systems for industrial applications.", 
+            deadline: "2024-11-30", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Electronics Engineer at Honeywell", 
+            url: "https://www.honeywell.com/careers", 
+            description: "Design and test electronics for various products.", 
+            deadline: "2024-12-01", 
+            remainingSlots: 7 
+        },
+        { 
+            title: "Power Electronics Engineer at Infineon", 
+            url: "https://www.infineon.com/careers", 
+            description: "Design power electronic systems for renewable energy.", 
+            deadline: "2024-11-28", 
+            remainingSlots: 6 
+        },
+        { 
+            title: "Electrical Design Engineer at ABB", 
+            url: "https://www.abb.com/careers", 
+            description: "Design electrical systems for industrial automation.", 
+            deadline: "2024-12-05", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "High Voltage Engineer at Mitsubishi Electric", 
+            url: "https://www.mitsubishielectric.com/careers", 
+            description: "Design and develop high voltage electrical systems.", 
+            deadline: "2024-11-20", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Power Transmission Engineer at Tata Power", 
+            url: "https://www.tatapower.com/careers", 
+            description: "Work on power transmission and distribution systems.", 
+            deadline: "2024-11-30", 
+            remainingSlots: 3 
+        },
+        { 
+            title: "Lighting Systems Engineer at Philips", 
+            url: "https://www.philips.com/careers", 
+            description: "Design lighting systems for various commercial projects.", 
+            deadline: "2024-12-10", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Electrical Maintenance Engineer at Cummins", 
+            url: "https://www.cummins.com/careers", 
+            description: "Ensure the reliability of electrical systems in plants.", 
+            deadline: "2024-12-01", 
+            remainingSlots: 6 
+        },
+        { 
+            title: "Circuit Design Engineer at Texas Instruments", 
+            url: "https://www.ti.com/careers", 
+            description: "Design and test analog and digital circuits.", 
+            deadline: "2024-12-12", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "Electromechanical Engineer at Bosch", 
+            url: "https://www.bosch.com/careers", 
+            description: "Design and integrate electromechanical systems for industrial applications.", 
+            deadline: "2024-11-22", 
+            remainingSlots: 3 
+        },
+        { 
+            title: "Signal Processing Engineer at Broadcom", 
+            url: "https://www.broadcom.com/careers", 
+            description: "Work on signal processing algorithms for communications.", 
+            deadline: "2024-11-25", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "Power Systems Protection Engineer at National Grid", 
+            url: "https://www.nationalgrid.com/careers", 
+            description: "Design protection systems for electrical power grids.", 
+            deadline: "2024-12-05", 
+            remainingSlots: 6 
+        },
+        { 
+            title: "Battery Systems Engineer at Tesla", 
+            url: "https://www.tesla.com/careers", 
+            description: "Develop battery storage systems for electric vehicles.", 
+            deadline: "2024-12-10", 
+            remainingSlots: 3 
+        },
+        { 
+            title: "Renewable Energy Engineer at First Solar", 
+            url: "https://www.firstsolar.com/careers", 
+            description: "Work on solar and wind energy systems.", 
+            deadline: "2024-12-01", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Energy Efficiency Engineer at Schneider Electric", 
+            url: "https://www.se.com/careers", 
+            description: "Design systems for optimizing energy efficiency in buildings.", 
+            deadline: "2024-11-30", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "Electrical Testing Engineer at Eaton", 
+            url: "https://www.eaton.com/careers", 
+            description: "Test and certify electrical equipment and systems.", 
+            deadline: "2024-11-20", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Automation Engineer at Rockwell Automation", 
+            url: "https://www.rockwellautomation.com/careers", 
+            description: "Develop automation systems for industrial applications.", 
+            deadline: "2024-12-02", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "Transformer Design Engineer at ABB", 
+            url: "https://www.abb.com/careers", 
+            description: "Design electrical transformers for various applications.", 
+            deadline: "2024-12-10", 
+            remainingSlots: 3 
+        },
+        { 
+            title: "Microelectronics Engineer at Maxim Integrated", 
+            url: "https://www.maximintegrated.com/careers", 
+            description: "Design and test microelectronics systems for consumer applications.", 
+            deadline: "2024-11-18", 
+            remainingSlots: 6 
+        },
+        { 
+            title: "Electric Vehicle Systems Engineer at Rivian", 
+            url: "https://www.rivian.com/careers", 
+            description: "Work on electric vehicle powertrain systems.", 
+            deadline: "2024-12-05", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Substation Engineer at Southern Company", 
+            url: "https://www.southerncompany.com/careers", 
+            description: "Work on the design and maintenance of electrical substations.", 
+            deadline: "2024-11-25", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "Grid Modernization Engineer at Iberdrola", 
+            url: "https://www.iberdrola.com/careers", 
+            description: "Develop modern electrical grids using smart technology.", 
+            deadline: "2024-12-10", 
+            remainingSlots: 7 
+        },
+        { 
+            title: "Electrical Power Generation Engineer at Exelon", 
+            url: "https://www.exeloncorp.com/careers", 
+            description: "Work on electrical generation systems for power plants.", 
+            deadline: "2024-12-12", 
+            remainingSlots: 6 
+        },
+        { 
+            title: "Energy Storage Systems Engineer at LG Chem", 
+            url: "https://www.lgchem.com/careers", 
+            description: "Develop energy storage solutions for renewable energy applications.", 
+            deadline: "2024-12-01", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "Electronics Manufacturing Engineer at Foxconn", 
+            url: "https://www.foxconn.com/careers", 
+            description: "Manage and optimize electronics manufacturing processes.", 
+            deadline: "2024-11-28", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Satellite Communications Engineer at SES", 
+            url: "https://www.ses.com/careers", 
+            description: "Design satellite communication systems for global networks.", 
+            deadline: "2024-11-30", 
+            remainingSlots: 6 
+        },
+        { 
+            title: "Electric Power Distribution Engineer at Duke Energy", 
+            url: "https://www.duke-energy.com/careers", 
+            description: "Design and manage electric power distribution systems.", 
+            deadline: "2024-11-20", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "Integrated Circuit Designer at Analog Devices", 
+            url: "https://www.analog.com/careers", 
+            description: "Design integrated circuits for communications systems.", 
+            deadline: "2024-12-02", 
+            remainingSlots: 4 
+        }
+    ],
+  
+    CE: [
+        { 
+            title: "Site Engineer at L&T Construction", 
+            url: "https://www.larsentoubro.com/careers", 
+            description: "Oversee construction projects and ensure they meet specifications.", 
+            deadline: "2024-12-10", 
+            remainingSlots: 6 
+        },
+        { 
+            title: "Structural Engineer at TATA Projects", 
+            url: "https://www.tataprojects.com/careers", 
+            description: "Design and analyze structural components for infrastructure projects.", 
+            deadline: "2024-11-30", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "Project Manager at Shapoorji Pallonji", 
+            url: "https://www.shapoorjipallonji.com/careers", 
+            description: "Manage construction projects, budgets, and timelines.", 
+            deadline: "2024-12-15", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Surveyor at Jacobs Engineering", 
+            url: "https://www.jacobs.com/careers", 
+            description: "Conduct land surveys and prepare reports for construction sites.", 
+            deadline: "2024-12-01", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "Civil Designer at AECOM", 
+            url: "https://www.aecom.com/careers", 
+            description: "Prepare design layouts for construction and civil engineering projects.", 
+            deadline: "2024-11-25", 
+            remainingSlots: 6 
+        },
+        { 
+            title: "Urban Planner at HOK", 
+            url: "https://www.hok.com/careers", 
+            description: "Design urban spaces and ensure their functionality and sustainability.", 
+            deadline: "2024-12-10", 
+            remainingSlots: 3 
+        },
+        { 
+            title: "Water Resources Engineer at Veolia", 
+            url: "https://www.veolia.com/careers", 
+            description: "Manage water treatment and supply projects.", 
+            deadline: "2024-12-01", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Construction Manager at Fluor Corporation", 
+            url: "https://www.fluor.com/careers", 
+            description: "Lead construction teams to successfully complete large infrastructure projects.", 
+            deadline: "2024-11-28", 
+            remainingSlots: 7 
+        },
+        { 
+            title: "Geotechnical Engineer at Golder Associates", 
+            url: "https://www.golder.com/careers", 
+            description: "Analyze soil and rock samples to design foundations and earthworks.", 
+            deadline: "2024-11-30", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "Bridge Engineer at Parsons Corporation", 
+            url: "https://www.parsons.com/careers", 
+            description: "Design, analyze, and oversee the construction of bridges.", 
+            deadline: "2024-12-05", 
+            remainingSlots: 6 
+        },
+        { 
+            title: "Highway Engineer at WSP Global", 
+            url: "https://www.wsp.com/careers", 
+            description: "Design and maintain roadways and highway systems.", 
+            deadline: "2024-11-22", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Environmental Engineer at Tetra Tech", 
+            url: "https://www.tetratech.com/careers", 
+            description: "Focus on sustainable construction practices and environmental regulations.", 
+            deadline: "2024-12-10", 
+            remainingSlots: 3 
+        },
+        { 
+            title: "Construction Estimator at Turner Construction", 
+            url: "https://www.turnerconstruction.com/careers", 
+            description: "Estimate construction costs for projects and create budgets.", 
+            deadline: "2024-12-01", 
+            remainingSlots: 6 
+        },
+        { 
+            title: "Land Development Engineer at PCL Construction", 
+            url: "https://www.pcl.com/careers", 
+            description: "Develop plans for residential, commercial, and industrial land projects.", 
+            deadline: "2024-11-28", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Civil Infrastructure Engineer at Buro Happold", 
+            url: "https://www.burohappold.com/careers", 
+            description: "Design and develop civil infrastructure systems like roads, drainage, and utilities.", 
+            deadline: "2024-12-05", 
+            remainingSlots: 7 
+        },
+        { 
+            title: "Flood Control Engineer at CH2M Hill", 
+            url: "https://www.ch2mhill.com/careers", 
+            description: "Design and implement flood control solutions and drainage systems.", 
+            deadline: "2024-11-22", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "Construction Safety Engineer at Kiewit Corporation", 
+            url: "https://www.kiewit.com/careers", 
+            description: "Ensure that construction sites comply with safety regulations.", 
+            deadline: "2024-12-10", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Civil Engineering Consultant at Arcadis", 
+            url: "https://www.arcadis.com/careers", 
+            description: "Provide expertise in civil engineering for various infrastructure projects.", 
+            deadline: "2024-12-01", 
+            remainingSlots: 6 
+        },
+        { 
+            title: "Traffic Engineer at Stantec", 
+            url: "https://www.stantec.com/careers", 
+            description: "Analyze and design transportation systems, including roads and intersections.", 
+            deadline: "2024-12-10", 
+            remainingSlots: 3 
+        },
+        { 
+            title: "Construction Project Coordinator at Bechtel Corporation", 
+            url: "https://www.bechtel.com/careers", 
+            description: "Assist in the coordination of all construction activities and resources.", 
+            deadline: "2024-11-20", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Architectural Engineer at Skanska", 
+            url: "https://www.skanska.com/careers", 
+            description: "Design, plan, and manage the construction of buildings and structures.", 
+            deadline: "2024-11-30", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "Railway Engineer at SNC-Lavalin", 
+            url: "https://www.snclavalin.com/careers", 
+            description: "Design and maintain railway systems and infrastructure.", 
+            deadline: "2024-12-05", 
+            remainingSlots: 6 
+        },
+        { 
+            title: "Pipeline Engineer at Enbridge", 
+            url: "https://www.enbridge.com/careers", 
+            description: "Design and maintain pipeline systems for the transportation of oil and gas.", 
+            deadline: "2024-11-20", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Structural BIM Engineer at Tishman Construction", 
+            url: "https://www.tishmanconstruction.com/careers", 
+            description: "Utilize Building Information Modeling (BIM) for structural engineering projects.", 
+            deadline: "2024-11-25", 
+            remainingSlots: 5 
+        }
+    ],
+    CHE: [
+        { 
+            title: "Process Engineer at ExxonMobil", 
+            url: "https://corporate.exxonmobil.com/careers", 
+            description: "Design and optimize chemical processes for energy production.", 
+            deadline: "2024-12-10", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "Chemical Engineer at Dow Chemicals", 
+            url: "https://www.dow.com/careers", 
+            description: "Develop and improve chemical processes for manufacturing.", 
+            deadline: "2024-11-30", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Production Engineer at BASF", 
+            url: "https://www.basf.com/careers", 
+            description: "Oversee chemical production lines and ensure product quality.", 
+            deadline: "2024-12-01", 
+            remainingSlots: 3 
+        },
+        { 
+            title: "Research Scientist at 3M", 
+            url: "https://www.3m.com/careers", 
+            description: "Develop new chemical products and technologies.", 
+            deadline: "2024-11-28", 
+            remainingSlots: 6 
+        },
+        { 
+            title: "Environmental Engineer at DuPont", 
+            url: "https://www.dupont.com/careers", 
+            description: "Design and implement systems for waste reduction and environmental sustainability.", 
+            deadline: "2024-12-15", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "Petrochemical Engineer at Shell", 
+            url: "https://www.shell.com/careers", 
+            description: "Work on refining processes in the petrochemical industry.", 
+            deadline: "2024-12-05", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Safety Engineer at Chevron", 
+            url: "https://www.chevron.com/careers", 
+            description: "Ensure safety protocols are followed in chemical production environments.", 
+            deadline: "2024-11-20", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "Chemical Process Developer at BP", 
+            url: "https://www.bp.com/careers", 
+            description: "Develop new processes for chemical manufacturing.", 
+            deadline: "2024-11-22", 
+            remainingSlots: 3 
+        },
+        { 
+            title: "Material Scientist at Dow Corning", 
+            url: "https://www.dowcorning.com/careers", 
+            description: "Develop new materials used in chemical production and manufacturing.", 
+            deadline: "2024-12-01", 
+            remainingSlots: 6 
+        },
+        { 
+            title: "Chemical R&D Engineer at Eastman Chemical", 
+            url: "https://www.eastman.com/careers", 
+            description: "Research and develop new chemical formulations and processes.", 
+            deadline: "2024-12-05", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Plant Manager at Huntsman", 
+            url: "https://www.huntsman.com/careers", 
+            description: "Oversee chemical production facilities and manage plant operations.", 
+            deadline: "2024-12-10", 
+            remainingSlots: 6 
+        },
+        { 
+            title: "Project Engineer at Fluor Corporation", 
+            url: "https://www.fluor.com/careers", 
+            description: "Lead engineering projects related to chemical process plants.", 
+            deadline: "2024-11-25", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "Chemical Compliance Officer at Veolia", 
+            url: "https://www.veolia.com/careers", 
+            description: "Ensure compliance with chemical safety regulations and standards.", 
+            deadline: "2024-11-30", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Manufacturing Engineer at PPG Industries", 
+            url: "https://www.ppg.com/careers", 
+            description: "Oversee chemical manufacturing operations and improve production efficiency.", 
+            deadline: "2024-12-12", 
+            remainingSlots: 3 
+        },
+        { 
+            title: "Biochemical Engineer at Novozymes", 
+            url: "https://www.novozymes.com/careers", 
+            description: "Develop and optimize bio-based chemical processes.", 
+            deadline: "2024-11-28", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Research and Development Engineer at Solvay", 
+            url: "https://www.solvay.com/careers", 
+            description: "Research new chemical materials and technologies for sustainable solutions.", 
+            deadline: "2024-12-05", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "Chemical Manufacturing Supervisor at Air Products", 
+            url: "https://www.airproducts.com/careers", 
+            description: "Supervise the manufacturing process of chemical products.", 
+            deadline: "2024-11-22", 
+            remainingSlots: 6 
+        },
+        { 
+            title: "Formulation Scientist at Johnson Matthey", 
+            url: "https://www.matthey.com/careers", 
+            description: "Develop and optimize formulations for industrial applications.", 
+            deadline: "2024-12-01", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Chemical Engineer at SABIC", 
+            url: "https://www.sabic.com/careers", 
+            description: "Work on large-scale chemical engineering projects to develop new products.", 
+            deadline: "2024-12-10", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "Refinery Engineer at Marathon Petroleum", 
+            url: "https://www.marathonpetroleum.com/careers", 
+            description: "Work in oil refineries and develop process improvements.", 
+            deadline: "2024-12-01", 
+            remainingSlots: 3 
+        },
+        { 
+            title: "Pharmaceutical Chemical Engineer at Pfizer", 
+            url: "https://www.pfizer.com/careers", 
+            description: "Develop chemical processes for pharmaceutical production.", 
+            deadline: "2024-11-22", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "Chemical Supply Chain Engineer at BASF", 
+            url: "https://www.basf.com/careers", 
+            description: "Optimize chemical supply chains for efficient production.", 
+            deadline: "2024-11-30", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Energy Engineer at Schneider Electric", 
+            url: "https://www.se.com/careers", 
+            description: "Optimize energy consumption in chemical manufacturing facilities.", 
+            deadline: "2024-12-05", 
+            remainingSlots: 6 
+        },
+        { 
+            title: "Process Control Engineer at Emerson", 
+            url: "https://www.emerson.com/careers", 
+            description: "Implement process control systems in chemical plants to improve productivity.", 
+            deadline: "2024-11-20", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Chemical Operations Analyst at TotalEnergies", 
+            url: "https://totalenergies.com/careers", 
+            description: "Analyze and optimize operations of chemical production processes.", 
+            deadline: "2024-12-10", 
+            remainingSlots: 5 
+        }
+    ],
+    IT: [
+        { 
+            title: "Software Engineer at Google", 
+            url: "https://careers.google.com/jobs/results/", 
+            description: "Design and build scalable software solutions.", 
+            deadline: "2024-12-01", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "Frontend Developer at Facebook", 
+            url: "https://www.facebook.com/careers", 
+            description: "Create modern, responsive user interfaces.", 
+            deadline: "2024-11-28", 
+            remainingSlots: 3 
+        },
+        { 
+            title: "Backend Developer at Amazon", 
+            url: "https://www.amazon.jobs/en/jobs", 
+            description: "Develop high-performance, scalable back-end systems.", 
+            deadline: "2024-12-05", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Data Scientist at Microsoft", 
+            url: "https://careers.microsoft.com/us/en", 
+            description: "Analyze large datasets to drive business insights.", 
+            deadline: "2024-11-30", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "Cybersecurity Analyst at IBM", 
+            url: "https://www.ibm.com/employment", 
+            description: "Protect the organization's data and systems from cyber threats.", 
+            deadline: "2024-12-10", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Mobile App Developer at Apple", 
+            url: "https://www.apple.com/careers", 
+            description: "Build and maintain mobile applications for iOS devices.", 
+            deadline: "2024-11-25", 
+            remainingSlots: 3 
+        },
+        { 
+            title: "Cloud Architect at Oracle", 
+            url: "https://www.oracle.com/corporate/careers", 
+            description: "Design and implement cloud solutions for large enterprises.", 
+            deadline: "2024-12-15", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "AI Engineer at Tesla", 
+            url: "https://www.tesla.com/careers", 
+            description: "Develop and implement AI models for Tesla's autonomous vehicles.", 
+            deadline: "2024-12-01", 
+            remainingSlots: 6 
+        },
+        { 
+            title: "DevOps Engineer at Spotify", 
+            url: "https://www.spotifyjobs.com", 
+            description: "Build and maintain the infrastructure needed to support continuous delivery.", 
+            deadline: "2024-11-22", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "Full Stack Developer at LinkedIn", 
+            url: "https://www.linkedin.com/careers", 
+            description: "Develop both front-end and back-end solutions for LinkedIn's platform.", 
+            deadline: "2024-12-10", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Software Engineer at Netflix", 
+            url: "https://jobs.netflix.com", 
+            description: "Build and maintain Netflix's software solutions across different platforms.", 
+            deadline: "2024-11-20", 
+            remainingSlots: 3 
+        },
+        { 
+            title: "Systems Analyst at Accenture", 
+            url: "https://www.accenture.com/us-en/careers", 
+            description: "Analyze and optimize IT systems for client organizations.", 
+            deadline: "2024-11-30", 
+            remainingSlots: 6 
+        },
+        { 
+            title: "Network Engineer at Cisco", 
+            url: "https://jobs.cisco.com", 
+            description: "Design and maintain network infrastructure solutions.", 
+            deadline: "2024-12-05", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Blockchain Developer at Chainlink", 
+            url: "https://chain.link/careers", 
+            description: "Develop blockchain solutions for decentralized applications.", 
+            deadline: "2024-12-01", 
+            remainingSlots: 3 
+        },
+        { 
+            title: "Data Engineer at Dropbox", 
+            url: "https://www.dropbox.com/careers", 
+            description: "Design and maintain data systems for Dropbox.", 
+            deadline: "2024-11-22", 
+            remainingSlots: 5 
+        },
+        { 
+            title: "Database Administrator at SAP", 
+            url: "https://www.sap.com/about/careers", 
+            description: "Administer and maintain SAP's database systems and ensure data integrity.", 
+            deadline: "2024-12-10", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "IT Support Specialist at Dell Technologies", 
+            url: "https://jobs.dell.com", 
+            description: "Provide technical support to clients and internal teams.", 
+            deadline: "2024-11-30", 
+            remainingSlots: 3 
+        },
+        { 
+            title: "Web Developer at Shopify", 
+            url: "https://www.shopify.com/careers", 
+            description: "Create e-commerce websites for businesses on Shopify's platform.", 
+            deadline: "2024-12-05", 
+            remainingSlots: 4 
+        },
+        { 
+            title: "Game Developer at Epic Games", 
+            url: "https://www.epicgames.com/careers", 
+            description: "Develop cutting-edge video games using Unreal Engine.", 
+            deadline: "2024-11-25", 
+            remainingSlots: 6 
+        },
+        { 
+            title: "Product Manager at Adobe", 
+            url: "https://www.adobe.com/careers", 
+            description: "Manage and lead product development cycles for Adobe's software products.", 
+            deadline: "2024-12-01", 
+            remainingSlots: 5 
+        }
+    ],
+
+
+
+    }; 
+function getBranchFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('branch');
+        }
+
+        function displayJobs() {
+            const branch = getBranchFromUrl();
+            document.getElementById('branch-name').innerText = branch || "Unknown Branch";
+            const jobListDiv = document.getElementById('job-list');
+
+            if (branch && jobListings[branch]) {
+                const jobs = jobListings[branch];
+                jobs.forEach((job, index) => {
+                    const jobItem = document.createElement('div');
+                    jobItem.classList.add('job-item');
+
+                    jobItem.innerHTML = `
+                        <h3><a href="${job.url}" target="_blank">${job.title}</a></h3>
+                        <p>${job.description}</p>
+                        <p>Deadline: <strong>${job.deadline}</strong></p>
+                        <p>Remaining Slots: <span id="remainingSlots-${index}" class="remaining-slots">${job.remainingSlots}</span></p>
+                        <button onclick="applyForJob('${branch}', ${index})">Apply Now</button>
+                    `;
+                    jobListDiv.appendChild(jobItem);
+                });
+            } else {
+                jobListDiv.innerHTML = "<p>No job listings available for this branch.</p>";
+            }
+        }
+
+        function applyForJob(branch, jobIndex) {
+            const job = jobListings[branch][jobIndex];
+
+            if (job.remainingSlots > 0) {
+                job.remainingSlots--;
+                document.getElementById(`remainingSlots-${jobIndex}`).innerText = job.remainingSlots;
+                alert(`Successfully applied for ${job.title}. Remaining slots: ${job.remainingSlots}.`);
+            } else {
+                alert(`No remaining slots available for ${job.title}.`);
+            }
+        }
+
+        function goBack() {
+            window.location.href = 'branch.html';
+        }
+
+        window.onload = displayJobs;
+    </script>
+</body>
+</html>
+    
